@@ -3,6 +3,31 @@ let twitter_page = false;
 let facebook_page = false;
 let twitter_messages = false;
 
+
+function ajax_post(url, data) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', url);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onload = function () {
+    if (xhr.status === 200) {
+      chrome.storage.local.get(function(data) {
+        if(typeof(data["map"]) !== 'undefined' && data["map"] instanceof Array) { 
+          data["map"].push(JSON.parse(xhr.responseText)['result']);
+        } else {
+          data["map"] = [JSON.parse(xhr.responseText)['result']];
+        }
+        chrome.storage.local.set(data); 
+      });
+    }
+  };
+  xhr.send(JSON.stringify(data));
+}
+
+chrome.runtime.onMessage.addListener(
+  function (request, sender, sendResponse) {
+    ajax_post("https://192.168.137.154:5000/analyze_raw", request);
+  });
+
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
   // GOOGLE 
 
