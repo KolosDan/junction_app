@@ -72,7 +72,7 @@ def analyze_unclassified(data):
             keywords_from_page.append(lemma)
 
     print({url_class: keywords_from_page})
-    return {url_class: keywords_from_page}
+    return {'type': 'unclassified', 'data': {url_class: keywords_from_page}, 'timestamp': data['timestamp'], 'url': data['url']}
     
 
 def analyze_search(data):
@@ -82,7 +82,7 @@ def analyze_search(data):
     if len(data['query'].strip().split(' ')) <= 3:
         query_key = data['query']
     else:
-        query_key = keywords.keywords(data['query'], ratio=0.5, words=1)
+        query_key = keywords.keywords(data['query'], ratio=0.8, words=1)
     
     clean_page = clean_html(data['next_html'])
 
@@ -91,8 +91,8 @@ def analyze_search(data):
     if keyword_count == 0:
         keyword_count = 1
 
-    if keyword_count > 15:
-        keyword_count = 15
+    if keyword_count > 5:
+        keyword_count = 5
 
     keywords_from_page = []
     for i in keywords.keywords(clean_page, words=keyword_count).split('\n'):
@@ -101,10 +101,10 @@ def analyze_search(data):
             keywords_from_page.append(lemma)
     
     print({query_key: keywords_from_page})
-    return {query_key: keywords_from_page}
+    return {'type': 'search', 'data': {query_key: keywords_from_page}, 'timestamp': data['timestamp'], 'url': data['next_url']}
 
 def analyze_messages(data):
-    print("NOT IMPLEMENTED")
+    pass
 
 def analyze_posts(data):
-    print("NOT IMPLEMENTED")
+    pass
