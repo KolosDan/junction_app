@@ -1,28 +1,29 @@
 // Setup
+let is_gathering = true;
 
 function check_form_2() {
     event.preventDefault();
     let email__ = document.getElementById("email").value
     document.getElementById("body").innerHTML = `
-            <p>Choose report frequency:</p>
+            <p><strong>Choose report frequency:</strong></p>
             <form id="form3">
-            <div>
+            <div class="form-group ">
                 <input type="radio" id="week" name="freq">
                 <label for="adult">Every week</label>
             </div>
-            <div>
+            <div class="form-group ">
                 <input type="radio" id="day" name="freq">
                 <label for="adult">Every day</label>
             </div>
-            <div>
+            <div class="form-group ">
                 <input type="radio" id="twelve" name="freq">
                 <label for="adult">Every 12 hours</label>
             </div>
-            <div>
+            <div class="form-group ">
                 <input type="radio" id="six" name="freq">
                 <label for="adult">Every 6 hours</label>
             </div>
-            <button type="submit" >Submit</button>
+            <button class="btn btn-primary btn-block" type="submit" >Submit</button>
             </form>`
     chrome.storage.local.set({ settings: { reciever: email__, update_frequency: 0, password: "" } })
 
@@ -45,14 +46,12 @@ function check_form_3() {
         freq = 72;
     }
     document.getElementById("body").innerHTML = `
-            <p>Enter your password:</p>
+            <p><strong>Enter your password:</strong></p>
             <form id="form4">
-            <div>
-                <input type="password" id="passwd" type="text">
-                <label for="passwd">Password</label>
+            <div class="form-group ">
+                <input class="form-control form-control-sm" type="password" id="passwd" placeholder="Password">
             </div>
-
-            <button type="submit" >Submit</button>
+            <button  class="btn btn-primary btn-block" type="submit" >Submit</button>
             </form>`
 
     chrome.storage.local.get('settings', function (data) {
@@ -77,6 +76,7 @@ function check_form_4() {
             }
         })
     })
+    get_back();
 }
 
 function check_config() {
@@ -86,26 +86,24 @@ function check_config() {
         }
         else if (Object.keys(settings["settings"]).length !== 0) {
             document.getElementById("body").innerHTML += `
-            <p>Enter your password:</p>
+            <p><strong>Enter your password:</strong></p>
             <form id="login">
-            <div>
-                <input id="check_pwd" type="password">
-                <label for="email">Passsword</label>
+            <div class="form-group ">
+                <input class="form-control form-control-sm" id="check_pwd" type="password" placeholder="Password">
             </div>
-            <button type="submit" >Submit</button>
+            <button class="btn btn-primary btn-block" style="margin-top:5px" type="submit" >Submit</button>
             </form>`
             document.getElementById('login').addEventListener('submit', login);
         }
         else {
             document.getElementById("body").innerHTML += `
-            <p>Enter your email:</p>
+            <p><strong>Enter your email:</strong></p>
             <form id="form2">
-            <div>
-                <input id="email" type="text">
-                <label for="email">Email</label>
+            <div class="form-group ">
+                <input class="form-control form-control-sm"  id="email" type="text" placeholder="Email">
             </div>
         
-            <button type="submit" >Submit</button>
+            <button class="btn btn-primary btn-block"  type="submit" >Submit</button>
             </form>`
             document.getElementById('form2').addEventListener('submit', check_form_2);
         }
@@ -116,16 +114,26 @@ function check_config() {
 
 function login() {
     event.preventDefault();
+    document.body.style.minWidth = "350px";
     var shaObj = new jsSHA("SHA-256", "TEXT");
     shaObj.update(document.getElementById("check_pwd").value);
     chrome.storage.local.get('settings', function (data) {
         if (data["settings"]["password"] === shaObj.getHash("HEX")) {
             document.getElementById("body").innerHTML = `
-            <h2>Dashboard</h2>
-            <button id="edit-settings" style="display:block; margin: 5px" onlcick="" >Edit settings</button>
-            <button id="charts" style="display:block; margin: 5px" onlcick="" >Charts</button>
-            <button id="start-stop" style="display:block; margin: 5px" onlcick="" >Stop monitoring</button>`
+            <h3 style="text-align:center">Dashboard</h3>
+            <div class="form-group">
+            <button class="btn btn-primary btn-block" id="edit-settings" style="display:block; margin: 5px" >Edit settings</button>
+            <button class="btn btn-primary btn-block" id="charts" style="display:block; margin: 5px" >Charts</button>
+            <button class="btn btn-primary btn-block" id="sent_charts" style="display:block; margin: 5px" >Sentiment</button>
+            <button class="btn btn-primary btn-block" id="daily" style="display:block; margin: 5px" >Daily</button>
+            <button class="btn btn-primary btn-block" id="start-stop" style="display:block; margin: 5px" >Stop monitoring</button>
+            </div>`
+
             document.getElementById("edit-settings").addEventListener("click", edit_settings);
+            document.getElementById("charts").addEventListener("click", display_charts);
+            document.getElementById("start-stop").addEventListener("click", start_stop);
+            document.getElementById("daily").addEventListener("click", display_recommendations);
+            document.getElementById("sent_charts").addEventListener("click", display_sent_charts);
         }
         else {
             document.getElementById("check_pwd").innerHTML = "";
@@ -134,27 +142,181 @@ function login() {
     })
 }
 
-function edit_settings() {
+function get_back() {
+    document.body.style.minWidth = "350px";
     document.getElementById("body").innerHTML = `
-            <h2>Edit settings:</h2>
-            <p>Change password</p>
-            <form id="update_pwd">
-            <div>
-                <input type="password" id="passwd_new">
-                <label for="passwd">New password</label>
-            </div>
-            <button type="submit" >Update</button>
-            </form>
-            <p>Change email</p>
-            <form id="update_email">
-            <div>
-                <input id="email_new" type="text">
-                <label for="passwd">New email</label>
-            </div>
-            <button type="submit">Update</button>
-            </form>`
+    <h3 style="text-align:center">Dashboard</h3>
+    <div class="form-group">
+    <button class="btn btn-primary btn-block" id="edit-settings" style="display:block; margin: 5px" >Edit settings</button>
+    <button class="btn btn-primary btn-block" id="charts" style="display:block; margin: 5px" >Charts</button>
+    <button class="btn btn-primary btn-block" id="sent_charts" style="display:block; margin: 5px" >Sentiment</button>
+    <button class="btn btn-primary btn-block" id="daily" style="display:block; margin: 5px" >Daily</button>
+    <button class="btn btn-primary btn-block" id="start-stop" style="display:block; margin: 5px" >Stop monitoring</button>
+    </div>`
+    document.getElementById("edit-settings").addEventListener("click", edit_settings);
+    document.getElementById("charts").addEventListener("click", display_charts);
+    document.getElementById("sent_charts").addEventListener("click", display_sent_charts);
+    document.getElementById("daily").addEventListener("click", display_recommendations);
+    document.getElementById("start-stop").addEventListener("click", start_stop);
 }
 
+
+function edit_settings() {
+    document.body.style.minWidth = "350px";
+    document.getElementById("body").innerHTML = `
+            <p><strong>Edit settings:<strong></p>
+            <div class="form-group">
+            <button class="btn btn-primary btn-block" style="margin-top:5px" id="u_pwd" >Change password</button>
+            <button class="btn btn-primary btn-block" style="margin-top:5px" id="u_email" >Change email</button>
+            <button type="button" class="btn btn-secondary btn-block" id="back" style="margin-top: 5px">Back</button>
+            </div>
+            `
+    document.getElementById("back").addEventListener("click", get_back);
+    document.getElementById("u_pwd").addEventListener("click", update_pwd__);
+    document.getElementById("u_email").addEventListener("click", update_email__);
+}
+
+function update_pwd__() {
+    document.getElementById("body").innerHTML = `
+    <p><strong>Enter new password:<strong></p>
+    <form id="update_pwd">
+    <div class="form-group">
+        <input class="form-control form-control-sm" type="password" id="passwd_new" placeholder="New password">
+        <button class="btn btn-primary btn-block" style="margin-top:5px" type="submit" >Update</button>
+    <button type="button" class="btn btn-secondary btn-block" id="back" style="margin-top: 5px">Back</button>
+    </div>
+    </form>
+    `
+    document.getElementById('update_pwd').addEventListener('submit', update_pwd);
+    document.getElementById("back").addEventListener("click", get_back);
+}
+
+function update_email__() {
+    chrome.storage.local.get('settings', function (data) {
+        document.getElementById("body").innerHTML = `
+    <p><strong>Current email: ${data["settings"]["reciever"]}</strong></p>
+    <form id="update_email">
+    <div class="form-group">
+        <input class="form-control form-control-sm" id="email_new" type="text" placeholder="New email">
+        <button class="btn btn-primary btn-block" style="display:inline;margin-top:5px" type="submit">Update</button>
+    <button type="button" class="btn btn-secondary btn-block" id="back" style="margin-top: 5px">Back</button>
+    </div>
+    </form>`
+        document.getElementById('update_email').addEventListener('submit', update_email);
+        document.getElementById("back").addEventListener("click", get_back);
+    })
+}
+
+chrome.runtime.onMessage.addListener(
+    function (request, sender, sendResponse) {
+        if (request.type === "display_charts") {
+            document.getElementById("body").innerHTML = `
+            <h2 id="chart_div"><strong >Chart statistics</strong></h2>
+            <button type="button" class="btn btn-secondary btn-block" id="back" style="margin-top: 5px">Back</button>`
+            document.getElementById("back").addEventListener("click", get_back);
+            let json = JSON.parse(request.data)["result"];
+            for (chart in json) {
+                document.getElementById('chart_div').innerHTML += "<br>";
+                document.getElementById('chart_div').innerHTML += chart;
+                document.getElementById('chart_div').innerHTML += "<br>";
+                document.getElementById('chart_div').innerHTML += json[chart];
+            }
+        }
+        else if (request.type === "display_recommendations") {
+            document.getElementById("body").innerHTML = `${JSON.parse(request.data)["result"]}
+            <button type="button" class="btn btn-secondary btn-block" id="back" style="margin-top: 5px">Back</button>`
+            document.getElementById("back").addEventListener("click", get_back);
+        }
+    })
+
+function display_charts() {
+    document.getElementById("body").innerHTML = `
+    <h5 style="font-size:24px;text-align:center"><strong>Loading...</strong><div class="spinner-border" role="status">
+    <span class="sr-only">Loading...</span>
+    </div></h5>
+
+    `
+    document.body.style.minWidth = "550px";
+    chrome.runtime.sendMessage({
+        type: "chart"
+    });
+}
+
+function display_sent_charts() {
+    document.getElementById("body").innerHTML = `
+    <h5 style="font-size:24px;text-align:center"><strong>Loading...</strong><div class="spinner-border" role="status">
+    <span class="sr-only">Loading...</span>
+    </div></h5>
+    `
+    document.body.style.minWidth = "550px";
+    chrome.runtime.sendMessage({
+        type: "sent_chart"
+    });
+}
+
+function display_recommendations() {
+    document.getElementById("body").innerHTML = `
+    <h5 style="font-size:24px;text-align:center"><strong>Loading...</strong><div class="spinner-border" role="status">
+    <span class="sr-only">Loading...</span>
+    </div></h5>
+    `
+    document.body.style.minWidth = "350px";
+    chrome.runtime.sendMessage({
+        type: "sent_recommend"
+    });
+}
+
+function start_stop() {
+    is_gathering = !is_gathering;
+    is_gathering ? alert("Started") : alert("Stopped");
+    chrome.runtime.sendMessage({
+        type: "gather"
+    });
+}
+
+function update_pwd() {
+    event.preventDefault();
+    var shaObj = new jsSHA("SHA-256", "TEXT");
+    shaObj.update(document.getElementById("passwd_new").value);
+
+    chrome.storage.local.get('settings', function (data) {
+        chrome.storage.local.set({
+            settings: {
+                reciever: data["settings"]["reciever"], update_frequency: data["settings"]["update_frequency"], password: shaObj.getHash("HEX")
+            }
+        })
+    })
+    document.getElementById("body").innerHTML = `
+            <p><strong>Edit settings:<strong></p>
+            <button class="btn btn-primary btn-block" style="margin-top:5px" id="u_pwd" >Change password</button>
+            <button class="btn btn-primary btn-block" style="margin-top:5px" id="u_email" >Change email</button>
+            <button type="button" class="btn btn-secondary btn-block" id="back" style="margin-top: 5px">Back</button>
+            `
+    document.getElementById("back").addEventListener("click", get_back);
+    document.getElementById("u_pwd").addEventListener("click", update_pwd__);
+    document.getElementById("u_email").addEventListener("click", update_email__);
+}
+
+function update_email() {
+    let new_email = document.getElementById("email_new").value;
+    chrome.storage.local.get('settings', function (data) {
+        chrome.storage.local.set({
+            settings: {
+                reciever: new_email,
+                update_frequency: data["settings"]["update_frequency"], password: data["settings"]["password"]
+            }
+        })
+    })
+    document.getElementById("body").innerHTML = `
+            <p><strong>Edit settings:<strong></p>
+            <button class="btn btn-primary btn-block" style="margin-top:5px" id="u_pwd" >Change password</button>
+            <button class="btn btn-primary btn-block" style="margin-top:5px" id="u_email" >Change email</button>
+            <button type="button" class="btn btn-secondary btn-block" id="back" style="margin-top: 5px">Back</button>
+            `
+    document.getElementById("back").addEventListener("click", get_back);
+    document.getElementById("u_pwd").addEventListener("click", update_pwd__);
+    document.getElementById("u_email").addEventListener("click", update_email__);
+}
 
 
 document.addEventListener("DOMContentLoaded", check_config, true);
