@@ -168,12 +168,41 @@ function edit_settings() {
             <div class="form-group">
             <button class="btn btn-primary btn-block" style="margin-top:5px" id="u_pwd" >Change password</button>
             <button class="btn btn-primary btn-block" style="margin-top:5px" id="u_email" >Change email</button>
+            <button class="btn btn-primary btn-block" style="margin-top:5px" id="u_freq" >Change email frequency</button>
             <button type="button" class="btn btn-secondary btn-block" id="back" style="margin-top: 5px">Back</button>
             </div>
             `
     document.getElementById("back").addEventListener("click", get_back);
     document.getElementById("u_pwd").addEventListener("click", update_pwd__);
     document.getElementById("u_email").addEventListener("click", update_email__);
+    document.getElementById("u_freq").addEventListener("click", update_freq__);
+}
+
+function update_freq__() {
+    document.getElementById("body").innerHTML = `
+    <p><strong>Choose report frequency:</strong></p>
+    <form id="update_freq">
+    <div class="form-group ">
+        <input type="radio" id="week" name="freq">
+        <label for="adult">Every week</label>
+    </div>
+    <div class="form-group ">
+        <input type="radio" id="day" name="freq">
+        <label for="adult">Every day</label>
+    </div>
+    <div class="form-group ">
+        <input type="radio" id="twelve" name="freq">
+        <label for="adult">Every 12 hours</label>
+    </div>
+    <div class="form-group ">
+        <input type="radio" id="six" name="freq">
+        <label for="adult">Every 6 hours</label>
+    </div>
+    <button class="btn btn-primary btn-block" type="submit" >Submit</button>
+    <button type="button" class="btn btn-secondary btn-block" id="back" style="margin-top: 5px">Back</button>
+    </form>`
+    document.getElementById('update_freq').addEventListener('submit', update_freq);
+    document.getElementById("back").addEventListener("click", get_back);
 }
 
 function update_pwd__() {
@@ -316,6 +345,41 @@ function update_email() {
     document.getElementById("back").addEventListener("click", get_back);
     document.getElementById("u_pwd").addEventListener("click", update_pwd__);
     document.getElementById("u_email").addEventListener("click", update_email__);
+}
+
+function update_freq() {
+    let freq = 0;
+    if (document.getElementById("six").checked) {
+        freq = 6;
+    }
+    else if (document.getElementById("twelve").checked) {
+        freq = 12;
+    }
+    else if (document.getElementById("day").checked) {
+        freq = 24;
+    }
+    else if (document.getElementById("week").checked) {
+        freq = 72;
+    }
+    chrome.storage.local.get('settings', function (data) {
+        chrome.storage.local.set({
+            settings: {
+                reciever: data["settings"]["reciever"],
+                update_frequency: freq, password: data["settings"]["password"]
+            }
+        })
+    })
+    document.getElementById("body").innerHTML = `
+            <p><strong>Edit settings:<strong></p>
+            <button class="btn btn-primary btn-block" style="margin-top:5px" id="u_pwd" >Change password</button>
+            <button class="btn btn-primary btn-block" style="margin-top:5px" id="u_email" >Change email</button>
+            <button class="btn btn-primary btn-block" style="margin-top:5px" id="u_freq" >Change email frequency</button>
+            <button type="button" class="btn btn-secondary btn-block" id="back" style="margin-top: 5px">Back</button>
+            `
+    document.getElementById("back").addEventListener("click", get_back);
+    document.getElementById("u_pwd").addEventListener("click", update_pwd__);
+    document.getElementById("u_email").addEventListener("click", update_email__);
+    document.getElementById("u_freq").addEventListener("click", update_freq__);
 }
 
 
