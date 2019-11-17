@@ -1,2 +1,9 @@
 flask
 summa
+flask_cors
+pymongo
+matplotlib
+textblob
+bs4
+lxml
+nltk
