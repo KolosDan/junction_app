@@ -7,11 +7,15 @@
 **Extension**
 Pre-requisities - Chrome Browser
 
+Download extension and unpack it via:
+https://drive.google.com/file/d/1e5B82EFzQhtACs_bHFvfkkZOfN5PPfSK/view?usp=sharing
+
+or clone repository:
 `git clone https://github.com/KolosDan/junction_app`
 
 Open `chrome://extensions/` in your Chrome desktop browser.
 
-Turn on the developer mode (up right corner) and click **Load Unpacked** button that apeared.
+Turn on the developer mode (up right corner) and click **Load Unpacked** button that apeared. Be careful - you need to upload ext **folder**, not zip archive or whole repository.
 
 Upper-right corner:
 ![Upper right corner!](https://i.imgur.com/MZmi28x.png)
