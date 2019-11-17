@@ -18,7 +18,7 @@ setInterval(() => {
 	})
 }, 5000);
 
-// setInterval(() => { chrome.storage.local.get('settings', function (html) { console.log(html) }) }, 5000);
+setInterval(() => { chrome.storage.local.get('settings', function (html) { console.log(html) }) }, 5000);
 
 chrome.extension.onMessage.addListener(function (msg, sender, sendResponse) {
 

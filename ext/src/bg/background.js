@@ -5,7 +5,6 @@ let twitter_messages = false;
 let gather = true;
 
 
-
 function ajax_post(url, data) {
   if (gather) {
     var xhr = new XMLHttpRequest();
@@ -76,6 +75,28 @@ chrome.runtime.onMessage.addListener(
         };
         xhr.send(JSON.stringify(data));
       })
+    }
+    else if (request.type === "send_email") {
+      let htmltosend = "";
+      chrome.storage.local.get('map', function (data) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', "https://b34b9a1a.ngrok.io/get_recommendations");
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function () {
+          if (xhr.status === 200) {
+            htmltosend += JSON.parse(xhr.response)["result"]
+            var xhr_email = new XMLHttpRequest();
+            xhr_email.open('POST', "https://b34b9a1a.ngrok.io/request_email");
+            xhr_email.setRequestHeader('Content-Type', 'application/json');
+            xhr_email.onload = function () {
+
+            };
+            xhr_email.send(JSON.stringify(htmltosend));
+          }
+        };
+        xhr.send(JSON.stringify(data));
+      })
+
     }
     else {
       ajax_post("https://b34b9a1a.ngrok.io/analyze_raw", request);

@@ -129,6 +129,7 @@ function login() {
             <button class="btn btn-primary btn-block" id="charts" style="display:block; margin: 5px" >Charts</button>
             <button class="btn btn-primary btn-block" id="sent_charts" style="display:block; margin: 5px" >Sentiment</button>
             <button class="btn btn-primary btn-block" id="daily" style="display:block; margin: 5px" >Daily</button>
+            <button class="btn btn-primary btn-block" id="sent_email" style="display:block; margin: 5px" >Send email</button>
             <button class="btn btn-primary btn-block" id="start-stop" style="display:block; margin: 5px" >Stop monitoring</button>
             </div>`
 
@@ -136,6 +137,7 @@ function login() {
             document.getElementById("charts").addEventListener("click", display_charts);
             document.getElementById("start-stop").addEventListener("click", start_stop);
             document.getElementById("daily").addEventListener("click", display_recommendations);
+            document.getElementById("sent_email").addEventListener("click", sent_email);
             document.getElementById("sent_charts").addEventListener("click", display_sent_charts);
         }
         else {
@@ -143,6 +145,12 @@ function login() {
             alert("Incorrect password!")
         }
     })
+}
+
+function sent_email() {
+    chrome.runtime.sendMessage({
+        type: "send_email"
+    });
 }
 
 function get_back() {
@@ -259,6 +267,9 @@ chrome.runtime.onMessage.addListener(
             <button type="button" class="btn btn-secondary btn-block" id="back" style="margin-top: 5px">Back</button>`
             document.getElementById("back").addEventListener("click", get_back);
         }
+        else if (request.type === "email") {
+            alert(request.data)
+        }
     })
 
 function display_charts() {
@@ -335,7 +346,7 @@ function update_email() {
         chrome.storage.local.set({
             settings: {
                 reciever: new_email,
-                update_frequency: data["settings"]["update_frequency"], password: data["settings"]["password"]
+                update_frequency: data["settings"]["update_frequency"], password: data["settings"]["password"],  date : data["settings"]["date"]
             }
         })
     })

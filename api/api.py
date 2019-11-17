@@ -100,7 +100,8 @@ def get_recommendations():
         print(e)
         return {'error': str(e)}
 
-# @app.route('/request_email', methods=['POST'])
-# def request_email():
-    # send_email("kolodaio@gmail.com",)
+@app.route('/request_email', methods=['POST'])
+def request_email():
+    send_email("kolodaio@gmail.com","kolodaio@gmail.com", "02468tyman",request.data.decode() )
+    return "200"
 app.run(host='0.0.0.0')
