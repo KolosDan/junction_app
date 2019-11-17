@@ -2,13 +2,6 @@
 
 ## Mood! It is a Chrome browser extension that does semantic analysis of the web-pages and peoples search queries to recognize harmful states of mind on the early stage. Self-care, increased awareness, happier life!
 
-## Screenshots and Interface
-
-On app initialization it will ask for your password (to secure access to the app), email for recieving reports about the mental state and the report interval (how often will send report to your email).
-
-
-
-
 ## Installation
 
 **Extension**
@@ -48,3 +41,22 @@ Pre-requisities - Python3, pip3.
 `python3 api.py`
 
 Then you change every `ngrok...` endpoint in the ext folder files to your own and your Mood API is running.
+
+## Screenshots and Interface
+
+On app initialization it will ask for your password (to secure access to the app), email for recieving reports about the mental state and the report interval (how often will send report to your email). The rest is pretty much intuitive.
+
+Local auth:
+![](https://i.imgur.com/NOrxOFJ.jpg)
+
+Dashboard:
+![](https://i.imgur.com/O4hGSXg.jpg)
+
+General mental state report:
+![](https://i.imgur.com/5lzEiK6.jpg)
+
+General mental state report 2:
+![](https://i.imgur.com/fVGWT3s.jpg)
+
+Interest chart:
+![](https://i.imgur.com/g5sHFMC.jpg)
