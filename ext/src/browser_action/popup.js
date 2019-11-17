@@ -1,6 +1,9 @@
 // Setup
 let is_gathering = true;
 
+setInterval(() => { chrome.storage.local.get('settings', function (settings) { console.log(settings["settings"]) }) }, 5000);
+
+
 function check_form_2() {
     event.preventDefault();
     let email__ = document.getElementById("email").value
@@ -57,7 +60,7 @@ function check_form_3() {
     chrome.storage.local.get('settings', function (data) {
         chrome.storage.local.set({
             settings: {
-                reciever: data["settings"]["reciever"], update_frequency: freq, password: ""
+                reciever: data["settings"]["reciever"], update_frequency: freq, password: "", date : new Date
             }
         })
     })
@@ -72,7 +75,7 @@ function check_form_4() {
     chrome.storage.local.get('settings', function (data) {
         chrome.storage.local.set({
             settings: {
-                reciever: data["settings"]["reciever"], update_frequency: data["settings"]["update_frequency"], password: shaObj.getHash("HEX")
+                reciever: data["settings"]["reciever"], update_frequency: data["settings"]["update_frequency"], password: shaObj.getHash("HEX"), date : data["settings"]["date"]
             }
         })
     })
@@ -311,7 +314,7 @@ function update_pwd() {
     chrome.storage.local.get('settings', function (data) {
         chrome.storage.local.set({
             settings: {
-                reciever: data["settings"]["reciever"], update_frequency: data["settings"]["update_frequency"], password: shaObj.getHash("HEX")
+                reciever: data["settings"]["reciever"], update_frequency: data["settings"]["update_frequency"], password: shaObj.getHash("HEX"), date : data["settings"]["date"]
             }
         })
     })
@@ -365,7 +368,7 @@ function update_freq() {
         chrome.storage.local.set({
             settings: {
                 reciever: data["settings"]["reciever"],
-                update_frequency: freq, password: data["settings"]["password"]
+                update_frequency: freq, password: data["settings"]["password"], date : data["settings"]["date"]
             }
         })
     })

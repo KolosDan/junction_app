@@ -1,11 +1,22 @@
 MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 let google_links = [];
 let timeout = false;
-// chrome.storage.local.set({ map: [] })
+
+Date.prototype.rmHours= function(h){
+    this.setHours(this.getHours()-h);
+    return this;
+}
 
 setInterval(() => { timeout = false; }, 2000);
 
-setInterval(() => { chrome.storage.local.get('map', function (html) { console.log(html) }) }, 5000);
+// setInterval(() => { chrome.storage.local.get('map', function (html) { console.log(html) }) }, 5000);
+
+setInterval(() => {
+	chrome.storage.local.get('settings', function (settings) {
+		var hours = Math.abs(new Date - new Date().rmHours(4)) / 36e5;
+		console.log(hours)	
+	})
+}, 5000);
 
 // setInterval(() => { chrome.storage.local.get('settings', function (html) { console.log(html) }) }, 5000);
 

@@ -4,6 +4,22 @@ from summa import keywords
 from nltk.stem import WordNetLemmatizer
 import pandas as pd
 from nltk.corpus import stopwords
+from nltk.tag import pos_tag
+
+depression_corpus = ['crying', 'hurt', 'sad', 'pain', 'emotional',
+     'tears', 'cry', 'cried', 'tear',
+     'sad', 'hate', 'sick', 'lonely', 'hurts', 
+     'upset', 'annoyed',
+     'confused', 'pissed', 'aid',
+     'nerves', 'fever', 'pain',
+     'headache', 'sick',
+     'hurting',
+     'meds', 'oppressed',
+     'sad', 'unhappy', 'hopeless', 
+     'discouraged', 'worthless', 'guilt', 'shame', 'critisizing', 'blaming', 
+     'difficult', 'loneliness', 'loss', 'insomnia', 'avoiding', 'dissatisfied', 
+     'worrying', 'worried', 'suicidal',
+     'failure', 'failed', 'guilty', 'punished', 'killing', 'annoyed', 'tired', 'lost']
 
 #URL Classification DB
 df = pd.read_csv('final_classified.csv').drop(columns=['Unnamed: 0'])
@@ -62,31 +78,40 @@ def analyze_unclassified(data):
     if keyword_count == 0:
         keyword_count = 1
 
-    if keyword_count > 15:
-        keyword_count = 15
+    if keyword_count > 5:
+        keyword_count = 5
 
     keywords_from_page = []
     for i in keywords.keywords(clean_page, words=keyword_count).split('\n'):
-        lemma = lmtz.lemmatize(i)
-        if lemma not in keywords_from_page and lemma not in stopwords.words('english') and len(lemma) >= 3:
-            keywords_from_page.append(lemma)
+        try:
+            lemma = lmtz.lemmatize(i)
+            if lemma not in keywords_from_page and lemma not in stopwords.words('english') and len(lemma) >= 3:
+                keywords_from_page.append(lemma)
+        except:
+            pass
+    
+    disorder_score = 0
 
-    print({url_class: keywords_from_page})
-    return {'type': 'unclassified', 'data': {url_class: keywords_from_page}, 'timestamp': data['timestamp'], 'url': data['url']}
+    corpus = depression_corpus
+    for i in corpus:
+        if i in keywords_from_page:
+            disorder_score += 2
+            corpus.remove(i)
+
+    for i in corpus:
+        if ' %s ' % i in clean_page:
+            disorder_score += 1
+
+
+    return {'type': 'unclassified', 'data': {url_class: keywords_from_page}, 'timestamp': data['timestamp'], 'url': data['url'], 'disorder_score': disorder_score}
     
 
 def analyze_search(data):
     lmtz = WordNetLemmatizer()
-    print(data['query'])
-
-    if len(data['query'].strip().split(' ')) <= 3:
-        query_key = data['query']
-    else:
-        query_key = keywords.keywords(data['query'], ratio=0.8, words=1)
     
     clean_page = clean_html(data['next_html'])
 
-    keyword_count = int(len(clean_page.split(' ')) * 0.01)
+    keyword_count = int(len(clean_page.split(' ')) * 0.05)
     
     if keyword_count == 0:
         keyword_count = 1
@@ -96,15 +121,29 @@ def analyze_search(data):
 
     keywords_from_page = []
     for i in keywords.keywords(clean_page, words=keyword_count).split('\n'):
-        lemma = lmtz.lemmatize(i)
-        if lemma not in keywords_from_page and lemma not in stopwords.words('english') and len(lemma) >= 3:
-            keywords_from_page.append(lemma)
+        try:
+            lemma = lmtz.lemmatize(i)
+            if lemma not in keywords_from_page and lemma not in stopwords.words('english') and len(lemma) >= 3:
+                keywords_from_page.append(lemma)
+        except:
+            pass
     
-    print({query_key: keywords_from_page})
-    return {'type': 'search', 'data': {query_key: keywords_from_page}, 'timestamp': data['timestamp'], 'url': data['next_url']}
+        disorder_score = 0
+
+    corpus = depression_corpus
+    for i in corpus:
+        if i in keywords_from_page:
+            disorder_score += 2
+            corpus.remove(i)
+
+    for i in corpus:
+        if i in clean_page:
+            disorder_score += 1
+
+    return {'type': 'search', 'data': { data['query']: keywords_from_page }, 'timestamp': data['timestamp'], 'url': data['next_url'], 'disorder_score': disorder_score}
 
 def analyze_messages(data):
-    pass
+    return {'type': 'sn_message', 'data': data['message'], 'timestamp': data['timestamp'], 'url': data['url']}
 
 def analyze_posts(data):
-    pass
+    return {'type': 'sn_feed', 'data': clean_html(data['post']), 'timestamp': data['timestamp'], 'url': data['url']}

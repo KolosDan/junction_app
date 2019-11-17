@@ -4,17 +4,7 @@ let facebook_page = false;
 let twitter_messages = false;
 let gather = true;
 
-// setInterval(() => {
-//   var xhr = new XMLHttpRequest();
-//   xhr.open('POST', "https://192.168.137.154:5000/ ");
-//   xhr.setRequestHeader('Content-Type', 'application/json');
-//   xhr.onload = function () {
-//     if (xhr.status === 200) {
-//       // response
-//     }
-//   };
-//   xhr.send(JSON.stringify(data));
-// }, 5000);
+
 
 function ajax_post(url, data) {
   if (gather) {
@@ -45,7 +35,7 @@ chrome.runtime.onMessage.addListener(
     else if (request.type === "chart") {
       chrome.storage.local.get('map', function (data) {
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', "https://192.168.137.154:5000/get_charts");
+        xhr.open('POST', "https://b34b9a1a.ngrok.io/get_charts");
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onload = function () {
           if (xhr.status === 200) {
@@ -60,7 +50,7 @@ chrome.runtime.onMessage.addListener(
     else if (request.type === "sent_chart") {
       chrome.storage.local.get('map', function (data) {
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', "https://192.168.137.154:5000/get_sentiment_charts");
+        xhr.open('POST', "https://b34b9a1a.ngrok.io/get_sentiment_charts");
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onload = function () {
           if (xhr.status === 200) {
@@ -75,7 +65,7 @@ chrome.runtime.onMessage.addListener(
     else if (request.type === "sent_recommend") {
       chrome.storage.local.get('map', function (data) {
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', "https://192.168.137.154:5000/get_recommendations");
+        xhr.open('POST', "https://b34b9a1a.ngrok.io/get_recommendations");
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onload = function () {
           if (xhr.status === 200) {
@@ -88,7 +78,7 @@ chrome.runtime.onMessage.addListener(
       })
     }
     else {
-      ajax_post("https://192.168.137.154:5000/analyze_raw", request);
+      ajax_post("https://b34b9a1a.ngrok.io/analyze_raw", request);
     }
   });
 
