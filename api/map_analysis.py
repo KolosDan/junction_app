@@ -312,22 +312,22 @@ recommendations = {
     'Disorder Score': {
         'NO': 'You are in a great mental condition. Keep up!',
         'LOW': 'How are you feeling today? A little more rest would not hurt :)',
-        'MED': 'Feeling down today? Here is a thing to help you out: *link_to_test*',
-        'HIGH': 'Soap n roap, huh?'
+        'MED': 'Feeling down today? Here is a thing that my help you out: *link_to_an_article_or_test*',
+        'HIGH': "It seems that you've had a rough time last week, and we want you to keep in mind, that it is not obligatory to feel that way. There are always people who cares and are able to help."
     },
 
     'Content Mood': {
         'NO': 'Healthy dose of negative rhanting in social nets acquired!',
         'LOW': 'Avoiding angry or upsetting content in social media will make the day even brighter!',
-        'MED': 'I suppose, it is enough of social nets for today. Have a good rest.',
-        'HIGH': 'You have surrounded you with negative content. Red alert, son'
+        'MED': 'Please, consider adding more positive content to your newsfeed. Now it makes us worry a little.',
+        'HIGH': 'You have surrounded you with negative content. Digital detoxication practices may help you feel much better!'
     },
 
     'Questionable habbits': {
         'NO': 'You have an amazingly healthy digital environment!',
-        'LOW': 'You spent so much time on the web today. Why are you interested in the following topics?',
-        'MED': 'It is time to start keeping track of the following things. Reducing the browsing of them will be good for you :)',
-        'HIGH': 'Be careful, really. We will miss you so much if something goes wrong :('
+        'LOW': 'Have you ever thought that the content you consume affects your mental health? Please, try to question yourself: why are you interested in the following topics?',
+        'MED': "It is time to start keeping track of the following things. Uncontrollable surfing may take you to the places you haven't ever wanted to see.",
+        'HIGH': 'Be careful! These topics never led anyone to the positive consequences.'
     }
 }
 
