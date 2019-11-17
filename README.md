@@ -21,10 +21,10 @@ Open `chrome://extensions/` in your Chrome desktop browser.
 Turn on the developer mode (up right corner) and click **Load Unpacked** button that apeared.
 
 Upper-right corner:
-![Upper right corner!](https://i.imgur.com/MZmi28x)
+![Upper right corner!](https://i.imgur.com/MZmi28x.png)
 
 Then upper-left corner:
-![](https://i.imgur.com/YCZfk4s)
+![](https://i.imgur.com/YCZfk4s.png)
 
 Choose the `ext` folder inside the repository you have cloned (e.g /home/user/junction_app/ext/)
 
