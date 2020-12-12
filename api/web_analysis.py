@@ -87,8 +87,8 @@ def analyze_unclassified(data):
             lemma = lmtz.lemmatize(i)
             if lemma not in keywords_from_page and lemma not in stopwords.words('english') and len(lemma) >= 3:
                 keywords_from_page.append(lemma)
-        except:
-            pass
+        except Exception as e:
+            print(e)
     
     disorder_score = 0
 
@@ -125,8 +125,8 @@ def analyze_search(data):
             lemma = lmtz.lemmatize(i)
             if lemma not in keywords_from_page and lemma not in stopwords.words('english') and len(lemma) >= 3:
                 keywords_from_page.append(lemma)
-        except:
-            pass
+        except Exception as e:
+            print(e)
     
         disorder_score = 0
 
