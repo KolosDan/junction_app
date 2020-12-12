@@ -34,7 +34,7 @@ chrome.runtime.onMessage.addListener(
     else if (request.type === "chart") {
       chrome.storage.local.get('map', function (data) {
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', "https://282e047a.ngrok.io/get_charts");
+        xhr.open('POST', "https://mood.fflab.co/get_charts");
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onload = function () {
           if (xhr.status === 200) {
@@ -49,7 +49,7 @@ chrome.runtime.onMessage.addListener(
     else if (request.type === "sent_chart") {
       chrome.storage.local.get('map', function (data) {
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', "https://282e047a.ngrok.io/get_sentiment_charts");
+        xhr.open('POST', "https://mood.fflab.co/get_sentiment_charts");
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onload = function () {
           if (xhr.status === 200) {
@@ -64,7 +64,7 @@ chrome.runtime.onMessage.addListener(
     else if (request.type === "sent_recommend") {
       chrome.storage.local.get('map', function (data) {
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', "https://282e047a.ngrok.io/get_recommendations");
+        xhr.open('POST', "https://mood.fflab.co/get_recommendations");
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onload = function () {
           if (xhr.status === 200) {
@@ -80,13 +80,13 @@ chrome.runtime.onMessage.addListener(
       let htmltosend = "";
       chrome.storage.local.get('map', function (data) {
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', "https://282e047a.ngrok.io/get_recommendations");
+        xhr.open('POST', "https://mood.fflab.co/get_recommendations");
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onload = function () {
           if (xhr.status === 200) {
             htmltosend += JSON.parse(xhr.response)["result"]
             var xhr_email = new XMLHttpRequest();
-            xhr_email.open('POST', "https://282e047a.ngrok.io/request_email");
+            xhr_email.open('POST', "https://mood.fflab.co/request_email");
             xhr_email.setRequestHeader('Content-Type', 'application/json');
             xhr_email.onload = function () {
 
@@ -99,7 +99,7 @@ chrome.runtime.onMessage.addListener(
 
     }
     else {
-      ajax_post("https://282e047a.ngrok.io/analyze_raw", request);
+      ajax_post("https://mood.fflab.co/analyze_raw", request);
     }
   });
 
