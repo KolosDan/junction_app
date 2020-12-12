@@ -30,7 +30,7 @@ def send_email(from_,to,password,html):
 def analyze_raw():
     try:
         post_data = eval(request.data.decode())
-
+        print(post_data)
         if post_data['type'] == 'unclassified':
             result = {'result': web_analysis.analyze_unclassified(post_data)}
         elif post_data['type'] == 'search':
@@ -50,7 +50,7 @@ def analyze_raw():
 def analyze_map():
     try:
         post_data = list(filter(lambda x: x != None, eval(request.data.decode())['map']))
-        
+        print(post_data)
         sessions = map_analysis.to_sessions(post_data, 'unclassified')
 
         from_ = re.sub(r'\d+:\d+:\d+', '00:00:01', post_data[-1]['timestamp'])
@@ -70,7 +70,7 @@ def analyze_map():
 def get_sentiment_charts():
     try:
         post_data = list(filter(lambda x: x != None, eval(request.data.decode())['map']))
-
+        print(post_data)
         from_ = re.sub(r'\d+:\d+:\d+', '00:00:01', post_data[-1]['timestamp'])
         to_ = re.sub(r'\d+:\d+:\d+', '23:59:59', post_data[-1]['timestamp'])
 
@@ -91,6 +91,7 @@ def get_recommendations():
     try:
         print('STARTED RECOMMENDATIONS')
         post_data = list(filter(lambda x: x != None, eval(request.data.decode())['map']))
+        print(post_data)
         from_ = re.sub(r'\d+:\d+:\d+', '00:00:01', post_data[-1]['timestamp'])
         to_ = re.sub(r'\d+:\d+:\d+', '23:59:59', post_data[-1]['timestamp'])
 
