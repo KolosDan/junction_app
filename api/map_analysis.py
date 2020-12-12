@@ -166,7 +166,7 @@ def sentiment_stats(frames, from_ = None, to_ = None):
 def compile_sentiment_charts(stats, seconds):
     #split
     charts = {}
-
+    print(stats)
     for cat in stats:
         intervals = []
 
