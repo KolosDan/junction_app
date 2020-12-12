@@ -105,4 +105,4 @@ def request_email():
     send_email("dan.danya99@gmail.com","dan.danya99@gmail.com", "teukiller99", request.data.decode() )
     return "200"
 
-app.run(host='0.0.0.0', ssl_context=("~/certs/tls.crt", "~/certs/tls.key"), port=443)
+app.run(host='0.0.0.0', ssl_context=("/home/kls/certs/tls.crt", "/home/kls/certs/tls.key"), port=443)
