@@ -30,7 +30,6 @@ def send_email(from_,to,password,html):
 def analyze_raw():
     try:
         post_data = eval(request.data.decode())
-        print(post_data)
         if post_data['type'] == 'unclassified':
             result = {'result': web_analysis.analyze_unclassified(post_data)}
         elif post_data['type'] == 'search':
