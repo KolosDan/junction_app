@@ -68,6 +68,7 @@ def analyze_map():
 def get_sentiment_charts():
     try:
         post_data = list(filter(lambda x: x != None, eval(request.data.decode())['map']))
+        print(post_data)
         from_ = re.sub(r'\d+:\d+:\d+', '00:00:01', post_data[-1]['timestamp'])
         to_ = re.sub(r'\d+:\d+:\d+', '23:59:59', post_data[-1]['timestamp'])
 
