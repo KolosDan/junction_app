@@ -7,11 +7,6 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-from OpenSSL import SSL
-context = SSL.Context(SSL.PROTOCOL_TLSv1_2)
-context.use_privatekey_file('~/certs/tls.key')
-context.use_certificate_file('~/certs/tls.crt')
-
 app = Flask(__name__)
 CORS(app)
 
@@ -110,4 +105,4 @@ def request_email():
     send_email("dan.danya99@gmail.com","dan.danya99@gmail.com", "teukiller99", request.data.decode() )
     return "200"
 
-app.run(host='0.0.0.0', ssl_context=context, port=443)
+app.run(host='0.0.0.0', ssl_context=("~/certs/tls.crt", "~/certs/tls.key"), port=443)

@@ -7,3 +7,4 @@ textblob
 bs4
 lxml
 nltk
+pandas
