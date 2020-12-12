@@ -169,7 +169,7 @@ def compile_sentiment_charts(stats, seconds):
     print(stats)
     for cat in stats:
         intervals = []
-
+        print("STATS", stats)
         start_time = datetime.strptime(min(list(stats[cat].keys())).split('.')[0], '%Y-%m-%dT%H:%M:%S')
         end_time = datetime.strptime(max(list(stats[cat].keys())).split('.')[0], '%Y-%m-%dT%H:%M:%S')
 
